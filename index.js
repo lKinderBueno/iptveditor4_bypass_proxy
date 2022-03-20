@@ -11,7 +11,7 @@ app.get("/hello", (req,res)=>res.send({status:"ok"}));
 app.register(require('./routes/proxy'), { prefix: '/' })
 
 app.register(require('fastify-cors'), {
-    origin: [/192.168.178.71/, /localhost:3000/, /iptveditor\.com$/],
+    origin: [/localhost:3000/, /iptveditor\.com$/],
     methods: ['GET', 'POST', 'OPTIONS'],
     allowedHeaders: 'Origin, Content-Type, X-Auth-Token',
     exposedHeaders: 'Content-Length, X-JSON',
