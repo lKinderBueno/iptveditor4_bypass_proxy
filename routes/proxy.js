@@ -11,7 +11,7 @@ module.exports = async (router, options) => {
             timeout: 60000,
         }).then(result => result.data)
         .catch(err => {
-            return null
+            console.log(`ERROR: ${url}\n`)
         });
         if(data)
             res.send(data)
