@@ -12,3 +12,5 @@ Run the file according to your operating system.
 
 Is the program safe?
 Of course it is. The program is a lightweight web server, no files are installed, no changes are made to your computer.
+
+Executable built with pkg
