@@ -7,18 +7,17 @@ const app = require('fastify')({
     disableRequestLogging: true,
 });
 
-app.get("/hello", (req,res)=>res.send({status:"ok"}));
+app.get("/hello", (req, res) => res.send({ status: "ok" }));
 app.register(require('./routes/proxy'), { prefix: '/' })
 
-app.register(require('fastify-cors'), {
-    origin: [/localhost:3000/, /iptveditor\.com$/],
+app.register(require('@fastify/cors'), {
+    origin: [/localhost/, /\.iptveditor\.com$/],
     methods: ['GET', 'POST', 'OPTIONS'],
-    allowedHeaders: 'Origin, Content-Type, X-Auth-Token',
-    exposedHeaders: 'Content-Length, X-JSON',
+    credentials: true,
+    maxAge: 100
 })
 
-
-app.listen(9710/*, '0.0.0.0'*/).then((server) => {
+app.listen({ port: 9710 }/*, '0.0.0.0'*/).then((server) => {
     console.log(`IPTVEditor 4 Bypass successfully started.\nOpening iptveditor.com...`)
     open('https://cloud.iptveditor.com');
 });

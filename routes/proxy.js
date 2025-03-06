@@ -8,7 +8,7 @@ module.exports = async (router, options) => {
                 headers: {
                     'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36"
                 },
-                timeout: 60000,
+                timeout: 360000, // 6 minutes
             }).then(result => result.data)
             .catch(err => {
                 console.log(`${err && err.message ? err.message : "Unknown error: "}: ${url}\n`)
