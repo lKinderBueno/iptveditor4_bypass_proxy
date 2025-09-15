@@ -1,0 +1,60 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Install pkg globally
+      run: npm install -g pkg
+
+    - name: Build executables
+      run: |
+        pkg --targets node18-win-x64 --output iptveditor4_bypass-win.exe .
+        pkg --targets node18-macos-x64 --output iptveditor4_bypass-macos .
+        pkg --targets node18-linux-x64 --output iptveditor4_bypass-linux .
+
+    - name: Create Release
+      uses: softprops/action-gh-release@v1
+      if: startsWith(github.ref, 'refs/tags/')
+      with:
+        files: |
+          iptveditor4_bypass-win.exe
+          iptveditor4_bypass-macos
+          iptveditor4_bypass-linux
+        body: |
+          ## IPTVEditor Bypass Release
+
+          This release contains executables for all platforms:
+          - `iptveditor4_bypass-win.exe` - Windows executable
+          - `iptveditor4_bypass-macos` - macOS executable
+          - `iptveditor4_bypass-linux` - Linux executable
+
+          ### How to use:
+          1. Download the appropriate executable for your operating system
+          2. Run the executable
+          3. The tool will start a local server on port 9710
+          4. Your browser will automatically open to https://cloud.iptveditor.com
+          5. Use Ctrl+C to stop the server
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
