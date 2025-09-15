@@ -3,7 +3,6 @@ const open = require('open');
 
 const app = require('fastify')({
     connectionTimeout: 90000,
-    ignoreTrailingSlash: true,
     disableRequestLogging: true,
 });
 

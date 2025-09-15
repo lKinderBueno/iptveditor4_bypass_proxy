@@ -2,7 +2,7 @@ module.exports = async (router, options) => {
     router.post('/proxy', async (req, res) => {
         const useragent = generateRandomUserAgent();
         const url = req.body.url;
-        console.log(`DOWNLOADING: ${url}\n`);
+        console.log(`DOWNLOADING: ${url} with User-Agent: ${useragent}\n`);
 
         try {
             const response = await fetch(url.trim(), {
@@ -27,7 +27,7 @@ module.exports = async (router, options) => {
 }
 
 const generateRandomUserAgent = () => {
-    const userAgents = ["okhttp/_libv_", "Dalvik/_libv_", "NexTv/_libv_/Android","TiviMate/_libv_ (_device_; Android _andv_)"]
+    const userAgents = ["okhttp/_libv_","TiviMate/_libv_ (_device_; Android _andv_)"]
     const androidTvDevices = [
         "Amazon AFTMM",
         "NVIDIA Shield TV",
