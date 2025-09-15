@@ -1,14 +1,15 @@
 module.exports = async (router, options) => {
     router.post('/proxy', async (req, res) => {
+        const useragent = generateRandomUserAgent();
         const url = req.body.url;
         console.log(`DOWNLOADING: ${url}\n`);
 
         try {
             const response = await fetch(url.trim(), {
                 headers: {
-                    'User-Agent': "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/99.0.4844.74 Safari/537.36"
+                    'User-Agent': useragent
                 },
-                timeout: 360000 // 6 minutes
+                timeout: 600000 // 10 minutes
             });
 
             if (!response.ok) {
@@ -23,4 +24,27 @@ module.exports = async (router, options) => {
             res.status(404).send();
         }
     });
+}
+
+const generateRandomUserAgent = () => {
+    const userAgents = ["okhttp/_libv_", "Dalvik/_libv_", "NexTv/_libv_/Android","TiviMate/_libv_ (_device_; Android _andv_)"]
+    const androidTvDevices = [
+        "Amazon AFTMM",
+        "NVIDIA Shield TV",
+        "Google Chromecast with Google TV",
+        "Xiaomi Mi Box S",
+        "Sony Bravia Android TV",
+        "Philips Android TV",
+        "TCL Android TV",
+        "Hisense Android TV",
+        "Sharp Android TV",
+        "OnePlus TV"
+    ];
+
+    const androidVersion = `${getRandomNumberInRange(6,14)}.${getRandomNumberInRange(0,2)}.${getRandomNumberInRange(0,2)}`;
+    const libVersion = `${getRandomNumberInRange(2,4)}.${getRandomNumberInRange(0,20)}.${getRandomNumberInRange(0,20)}`;
+
+    const randomUAIndex = Math.floor(Math.random() * userAgents.length);
+    const randomDeviceIndex = Math.floor(Math.random() * androidTvDevices.length);
+    return userAgents[randomUAIndex].replace("_libv_", libVersion).replace("_andv_", androidVersion).replace("_device_", androidTvDevices[randomDeviceIndex]);
 }
