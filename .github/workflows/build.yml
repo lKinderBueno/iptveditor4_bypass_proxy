@@ -14,23 +14,24 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v4
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v4
+    - name: Setup Bun
+      uses: oven-sh/setup-bun@v1
       with:
-        node-version: '18'
-        cache: 'npm'
+        bun-version: latest
 
     - name: Install dependencies
-      run: npm ci
+      run: bun install
 
-    - name: Install pkg globally
-      run: npm install -g pkg
-
-    - name: Build executables
+    - name: Build all executables
       run: |
-        pkg --targets node18-win-x64 --output iptveditor4_bypass-win.exe .
-        pkg --targets node18-macos-x64 --output iptveditor4_bypass-macos .
-        pkg --targets node18-linux-x64 --output iptveditor4_bypass-linux .
+        # Windows
+        bun build --compile --target bun-windows-x64 --minify --sourcemap ./index.js --outfile iptveditor4_bypass-win.exe
+
+        # macOS
+        bun build --compile --target bun-darwin-x64 --minify --sourcemap ./index.js --outfile iptveditor4_bypass-macos
+
+        # Linux
+        bun build --compile --target bun-linux-x64 --minify --sourcemap ./index.js --outfile iptveditor4_bypass-linux
 
     - name: Create Release
       uses: softprops/action-gh-release@v1
@@ -54,6 +55,14 @@ jobs:
           3. The tool will start a local server on port 9710
           4. Your browser will automatically open to https://cloud.iptveditor.com
           5. Use Ctrl+C to stop the server
+
+          ### What's included:
+          - Lightweight web server for bypassing IPTV provider restrictions
+          - CORS support for iptveditor.com domains
+          - Automatic browser opening
+          - Graceful shutdown handling
+
+          Built with Bun's cross-compilation for optimal performance and smaller file sizes.
         draft: false
         prerelease: false
       env:
