@@ -48,3 +48,7 @@ const generateRandomUserAgent = () => {
     const randomDeviceIndex = Math.floor(Math.random() * androidTvDevices.length);
     return userAgents[randomUAIndex].replace("_libv_", libVersion).replace("_andv_", androidVersion).replace("_device_", androidTvDevices[randomDeviceIndex]);
 }
+
+function getRandomNumberInRange(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
